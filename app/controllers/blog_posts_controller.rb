@@ -143,7 +143,7 @@ class BlogPostsController < ApplicationController
 
 	 # --------------------------------------------------------------------------------------
 	 def verify_blog_visible
- 		 if !@blog || (!@blog.is_visible && !sortagod?)
+ 		 if !@blog || !@blog.is_visible
   			 flash[:error] = "That blog doesn't exist."
   			 redirect_to('/blog')
   			 return false
