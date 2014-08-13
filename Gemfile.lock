@@ -48,9 +48,16 @@ GEM
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
     arel (3.0.3)
+    better_errors (1.1.0)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+    binding_of_caller (0.7.2)
+      debug_inspector (>= 0.0.1)
     bootstrap-sass (3.2.0.1)
       sass (~> 3.2)
     builder (3.0.4)
+    coderay (1.1.0)
+    debug_inspector (0.0.2)
     dynamic_form (1.1.4)
     erubis (2.7.0)
     execjs (2.2.1)
@@ -118,6 +125,8 @@ PLATFORMS
 
 DEPENDENCIES
   annotate
+  better_errors
+  binding_of_caller
   bootstrap-sass (~> 3.2.0)
   dynamic_form
   mysql2
