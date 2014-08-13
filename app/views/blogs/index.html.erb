@@ -1,0 +1,26 @@
+<h1>Listing blogs</h1>
+
+<% if blog_logged_in? %>
+  <p><%= link_to 'Edit Account', { :controller => 'users', :action => 'edit', :id => current_user.id } %></p>
+  <% if current_user.admin? %>
+    <p><%= link_to 'Create Admin User', { :controller => 'users', :action => 'new' } %></p>
+  <% end %>
+<% end %>
+
+<table>
+  <tr>
+    <th>Url identifier</th>
+		<th>Actions</th>
+  </tr>
+
+<% @blogs.each do |blog| %>
+  <tr>
+    <td><%=h blog.url_identifier %></td>
+    <td><%= link_to 'Show', blog %>, <%= link_to 'Edit', edit_blog_path(blog) %>, <%= link_to 'Destroy', blog, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New blog', new_blog_path %>

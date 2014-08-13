@@ -1,0 +1,63 @@
+<%# Renders a blog post
+# -params-
+# blog_post: the blog post
+# header_style (optional): 'h1', 'h2', etc.
+-%>
+
+<% header_style ||= 'h1'
+   truncate_words ||= nil
+	 suppress_footer_summary ||= false
+   comment_scope = blog_logged_in? ? blog_post.approved_comments : blog_post.approved_comments.featured
+   %>
+
+
+<div class="one_blog">
+    <<%= header_style %> style="margin-bottom:0px"><%= link_to(blog_post.title, blog_named_link(blog_post)) %></<%= header_style %>>
+
+
+	<div class="byline">
+		<div class="byline_avatar"><%= image_tag(blog_post.posted_by.avatar.try(:thumb48_path) || 'avatar.jpg') %></div>
+
+		<div class="byline_content">
+			By <%= blog_post.posted_by.user_name -%><br>
+			<span class="post_date">
+			  Posted on <%= blog_post.created_at.strftime("%B %d, %Y") %> |
+			  <%= pluralize(comment_scope.size, 'comment') %>
+			</span>
+		</div>
+	</div>
+
+    <div style="clear:both"></div>
+	<p><% content = blog_post.body %>
+	<% if truncate_words %>
+		<% truncate_output = truncate(content, :lenght => truncate_words, :omission => "... (continued)" ) %>
+		<%= raw truncate_output %>
+	<% else %>
+		<%= raw content %>
+	<% end %>
+	</p>
+
+	<div class="footer_summary">
+		<% if suppress_footer_summary %>
+      <div class="continue_reading"><%= link_to(raw("Continue reading &raquo;"), blog_named_link(blog_post), :style => "font-size:13px;font-weight:bold;") %></div>
+		<% else %>
+      <div class="footer_detail"><span class="label">Comments:</span> <% if comment_scope.empty? %><%= link_to "No comments yet", blog_named_link(blog_post) -%><% else %><%= link_to pluralize(comment_scope.size, "comment"), blog_named_link(blog_post) -%><% end %></div>
+      <% if blog_post.category %>
+        <div class="footer_detail"><span class="label">Category:</span> <%= raw link_to blog_post.category.name, {:controller => 'blog_posts', :action => :index, :blog_id => blog_post.blog_id, :category_id => blog_post.category_id} %></div>
+      <% end %>
+      <% unless blog_post.tags.blank? %>
+        <div class="footer_detail"><span class="label">Tags:</span> <%= raw blog_post.tags.collect { |t| link_to(t.name, {:controller => 'blog_posts', :action => :index, :blog_id => blog_post.blog_id}.merge(:tag_name => t.name)) }.join(", ") %></div>
+      <% end %>
+		<% end %>
+	</div>
+
+	<% if blog_logged_in? && (current_user.can_blog?(@blog_id) || current_user.can_moderate_blog_comments?(@blog_id)) %>
+		<% actions = []
+		actions << link_to('Edit', blog_named_link(blog_post, :edit)) if current_user.can_blog?(@blog_id)
+		actions << link_to('Destroy', blog_named_link(blog_post, :destroy), :confirm => 'Are you sure?', :method => :delete) if current_user.can_blog?(@blog_id)
+		actions << link_to('Close commenting', blog_named_link(blog_post, :close), :confirm => 'Are you sure?') if current_user.can_moderate_blog_comments?(@blog_id) && !blog_post.comments_closed?
+		%>
+		<br /><br /><%= raw actions.join(" or ") -%>
+	<% end %>
+<br/>
+</div>

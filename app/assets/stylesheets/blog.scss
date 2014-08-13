@@ -1,0 +1,144 @@
+#bloggity_container {
+  width: 960px;
+  margin: 20px auto 0;
+  position: relative;
+
+	.post_date {
+		color:gray;
+		font-size:10px;
+	}
+
+	#sidebar_right a {
+		color: #3d84ad;
+	}
+
+	#sidebar_right h3.subtitle {
+		margin-top: 30px;
+	}
+
+	#comment_container {
+		ul.comments_body {
+			margin: 10px 0 20px;
+			padding:0;
+      list-style: none;
+		}
+
+		ul.comments_body li {
+			padding:5px;
+		}
+
+		ul.comments_body td.comment_image {
+			vertical-align:top;
+		}
+
+		ul.comments_body td.comment_image img {
+			width:120px;
+		}
+
+		ul.comments_body td.comment_body {
+			padding-left:10px;
+		}
+
+		ul.comments_body li.dark {
+			color:#444;
+			background-color:#F8F8F8;
+			border-bottom:1px solid #DDDDDD;
+			border-top:1px solid #DDDDDD;
+		}
+
+		.response_area {
+			padding:10px;
+		}
+	}
+
+	div#system_announcements {
+		border-bottom:1px solid #DDDDDD;
+		border-top:1px solid #DDDDDD;
+		color:gray;
+		background:url(/images/blog/process.png) no-repeat center left #F8F8F8;
+		padding:10px 35px;
+		font-size:20px;
+		margin:13px 0;
+		font-weight:bold;
+	}
+
+	.one_blog {
+		margin: 0 0 30px;
+	}
+
+	.one_blog p, .one_blog ul, .one_blog ol {
+		font-size:14px;
+		line-height:18px;
+		margin:18px 0;
+		font-family:Georgia;
+	}
+
+
+	.one_blog ul {
+		list-style-type:disc;
+	}
+
+	div.byline {
+		padding: 8px 5px 8px 85px;
+		background: #f0f0f0;
+		border: 1px solid #f0f0f0;
+		position: relative;
+		height: 55px;
+		margin: 20px 0;
+	}
+
+	div.byline a {
+		color: #3d84ad;
+	}
+
+	div.byline_avatar {
+		position: absolute;
+		top: -7px;
+		left: 10px;
+		padding: 2px;
+		border: 1px solid #ccc;
+		background: #fff;
+	}
+
+	ul.byline_actions {
+		float: right;
+		margin: 0;
+		padding: 6px;
+		list-style: none;
+	}
+
+	ul.byline_actions li {
+		float: left;
+		padding-left: 10px;
+		margin-left: 10px;
+		border-left: 1px solid #ccc;
+	}
+
+	ul.byline_actions li:first-child { border-left: none; }
+
+	ul.byline_actions .facebook_button {
+		width: 100px;
+		height: 20px;
+		margin-left: 10px;
+	}
+
+	div.byline_content { margin-top: 2px; }
+
+	div.footer_summary {
+		margin: 15px 0;
+		height: 20px;
+		border-top: 1px dotted #ccc;
+		padding-top: 5px;
+	}
+
+	div.footer_summary .footer_detail {
+		float: left;
+		margin-right: 15px;
+		font-size: 11px;
+		color: #999;
+	}
+
+	div.footer_summary .label {
+		font-weight: bold;
+	}
+}

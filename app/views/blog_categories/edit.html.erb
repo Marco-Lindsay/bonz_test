@@ -1,0 +1,12 @@
+<h1>Editing blog_category</h1>
+
+<%= form_for(@blog_category) do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @blog_category %> |
+<%= link_to 'Back', blog_categories_path %>

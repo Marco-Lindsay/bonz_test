@@ -1,0 +1,18 @@
+<div id="breadcrumb">
+	<a href="/">Home</a> &raquo; <%= link_to("Blog", blog_named_link(@blog_post, :index)) %> &raquo; <%= @blog_post.title %>
+</div>
+
+<div style="clear:both"></div>
+
+<div id="main_left">
+	<%= render :partial => 'show', :locals => { :blog_post => @blog_post } %>
+
+	<% if @blog_post.blog.fb_commenting %>
+		<fb:comments href="<%# qualified_blog_named_link(@blog_post)%>"></fb:comments>
+	<% else %>
+		<%= render :partial => 'comments', :locals => { :blog_post => @blog_post } %>
+	<% end %>
+
+</div>
+
+<%= render :partial => 'side_nav' %>

@@ -1,0 +1,62 @@
+<%# Guess.
+# -params-
+# comment: the comment we're showing
+# blog_post:
+-%>
+<% blog_post ||= nil %>
+
+<li id="blog_comment_<%= comment.id %>" class="<%= cycle('dark', '') if !comment.response? -%> <%= comment.approved ? "approved" : "not_approved" -%>">
+	<table><tr><td class="comment_image">
+		<% unless comment.user.nil? %>
+		<%= image_tag (comment.user.avatar.try(:thumb48_path) || 'avatar.jpg') -%>
+		<% end %>
+	</td><td class="comment_body">
+		<% can_modify_comment = current_user && comment.responses.empty? && ((current_user == comment.user && !blog_post.comments_closed?) || current_user.can_moderate_blog_comments?(@blog_id)) %>
+		<p><span style="font-weight:bold;"><%= comment.user.user_name %> says<%= " in response" if comment.response? %>:</span><br />
+		<%= comment.created_at.strftime("%x at %X") %></p>
+		<p style="margin:10px 5px 10px 0pt;"><%= raw comment.comment %></p>
+		<% if blog_logged_in? && can_modify_comment %>
+			<%= link_to "Edit comment", { :controller => 'blog_comments', :action => :edit, :id => comment.id } %>
+		<% end %>
+		<% if current_user && current_user.can_moderate_blog_comments?(@blog_id) %>
+			<%= link_to "Delete comment", { :controller => 'blog_comments', :action => :destroy, :id => comment, :referring_url => params }, { :method => :delete, :confirm => "Are you sure you want to delete this comment?" } %>
+		<% end %>
+		<% if current_user.try(:can_moderate_blog_comments?, blog_post.blog_id) %>
+		  <%= link_to_remote "#{comment.featured ? 'Unf' : 'F'}eature comment",
+		    :url => {:controller => 'blog_comments', :action => :feature, :id => comment},
+		    :before => "$('#feature_comment_#{comment.id}').show()",
+		    :complete => "$('#feature_comment_#{comment.id}').hide(); $('#comment_link_#{comment.id}').html(request.responseText)",
+		    :html => {:class => "feature_comment", :id => "comment_link_#{comment.id}"} %>
+        <%= image_tag("spinner.gif", {:id => "feature_comment_#{comment.id}", :class => 'hidden_spinner'}) %>
+		<% end %>
+		<% if !comment.approved && current_user == comment.user %>
+			<br /><br /><em>Comment awaiting moderator approval</em>
+		<% end %>
+		</p>
+
+		<% if current_user.try(:can_moderate_blog_comments?, blog_post.blog_id) %>
+			<div class="response_area">
+				<%= remote_form_for(:comment_approval, :url => { :controller => "blog_comments", :action => :approval_decision, :id => comment },
+					:update => "blog_comment_#{comment.id}") do |f| %>
+					<% if comment.approved.nil? %>
+						<%= f.radio_button :decision, :approve %> <label for="comment_approval_decision_approve">Approve</label>
+						<%= f.radio_button :decision, :disapprove %> <label for="comment_approval_decision_disapprove">Disapprove</label>&nbsp;&nbsp;
+						<%= f.submit "Submit", :class => "button26" %> &nbsp;&nbsp;&nbsp;
+					<% end %>
+					<%= link_to_function("Reply", "$('#response_to_#{comment.id}').show()") %>
+					<div id="response_to_<%= comment.id %>" style="display:none">
+						<p>Your response:</p>
+						<%= f.text_area :response, :rows => 4, :columns => 60 %><br>
+						<%= f.submit "Approve with response", :class => "button26" %>
+					</div>
+				<% end %>
+			</div>
+		<% end %>
+	</td></tr>
+	<% comment.responses.each do |response| %>
+		<tr><td colspan="2" style="padding-left:30px">
+		<%= render :partial => "blog_comments/show", :locals => { :blog_post => blog_post, :comment => response } %>
+		</td></tr>
+	<% end %>
+	</table>
+</li>

@@ -1,0 +1,17 @@
+<%= form_for(@user, :url => { :controller => 'users', :action => :create }) do |f| %>
+  <p>Email: &nbsp;<%= f.text_field :email, :style => "font-size:20px" %></p>
+  <p>User name: &nbsp;<%= f.text_field :user_name, :style => "font-size:20px" %></p>
+  <p>Password: &nbsp;<%= f.password_field :password, :style => "font-size:20px" %></p>
+  <p>Confirm Password: &nbsp;<%= f.password_field :password_confirmation, :style => "font-size:20px" %></p>
+
+  <p>First Name: &nbsp;<%= f.text_field :first_name, :style => "font-size:20px" %></p>
+  <p>Last Name: &nbsp;<%= f.text_field :last_name, :style => "font-size:20px" %></p>
+
+  <% if current_user.admin? %>
+    <p>Role: &nbsp;<%= f.select :role, options_for_select([[ 'Commenter', 0 ], [ 'Admin', 1 ]]), :style => "font-size:20px" %></p>
+  <% end %>
+
+  <p>Avatar: &nbsp;<%= file_field_tag 'avatar[uploaded_data]' %></p>
+
+  <p><%= f.submit 'Create new user' %></p>
+<% end %>

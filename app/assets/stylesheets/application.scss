@@ -1,0 +1,43 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import 'blog';
+
+#main_left {
+  float: left;
+  width: 733px;
+}
+
+#sidebar_right {
+  width: 195px;
+  float: right;
+  clear: right;
+  margin-bottom: 30px;
+}
+
+#breadcrumb {
+	color: #667680;
+	font-size: 11px;
+	padding-bottom: 10px;
+}
+
+#breadcrumb a:link,
+#breadcrumb a:visited,
+#breadcrumb a:hover,
+#breadcrumb a:active {
+	word-spacing: normal;
+	text-decoration: none;
+	font-size: 11px;
+}
+
+.form-signin {
+  width: 330px;
+  margin: 0 auto;
+
+  .form-control {
+    margin-bottom: 4px;
+  }
+}
+
+.hidden_spinner {
+  display: none;
+}

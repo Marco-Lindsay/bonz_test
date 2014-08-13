@@ -1,0 +1,23 @@
+<%= form_for(@user, :url => { :controller => 'users', :action => :update, :id => @user.id }, :html => {:multipart => true}) do |f| %>
+  <p>Email: &nbsp;<%= f.text_field :email, :style => "font-size:20px" %></p>
+  <p>User name: &nbsp;<%= f.text_field :user_name, :style => "font-size:20px" %></p>
+  <p>Password: &nbsp;<%= f.password_field :password, :style => "font-size:20px" %></p>
+  <p>Confirm Password: &nbsp;<%= f.password_field :password_confirmation, :style => "font-size:20px" %></p>
+
+  <p>First Name: &nbsp;<%= f.text_field :first_name, :style => "font-size:20px" %></p>
+  <p>Last Name: &nbsp;<%= f.text_field :last_name, :style => "font-size:20px" %></p>
+
+  <% if current_user.admin? %>
+    <p>Role: &nbsp;<%= f.select :role, options_for_select([[ 'Commenter', 0 ], [ 'Contributor', 1 ], [ 'Manager', 2 ], [ 'Admin', 3 ], [ 'Super Admin', 4 ]], @user.role) %></p>
+  <% end %>
+
+  <p>
+    Avatar: &nbsp;<br />
+    <% if current_user.avatar.present? %>
+      <%= image_tag current_user.avatar.public_filename %>
+    <% end %>
+    <%= file_field_tag 'avatar[uploaded_data]' %>
+  </p>
+
+  <p><%= f.submit 'Update user' %></p>
+<% end %>
