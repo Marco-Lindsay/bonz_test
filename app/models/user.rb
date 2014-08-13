@@ -25,13 +25,13 @@ class User < ActiveRecord::Base
 
   xss_terminate
 
-  has_one :avatar, :foreign_key => :user_id, :class_name => 'UserProfileImage', :dependent => :destroy
+  has_one :avatar, foreign_key: :user_id, class_name: 'UserProfileImage', dependent: :destroy
 
-  validates_presence_of     :user_name, :email
-  validates_uniqueness_of   :user_name, :case_sensitive => false
+  validates_presence_of :user_name, :email
+  validates_uniqueness_of :user_name, case_sensitive: false
 
-  validates_presence_of     :password, :on => :create
-  validates_confirmation_of :password, :unless => lambda { |u| u.password.blank? }
+  validates_presence_of :password, on: :create
+  validates_confirmation_of :password, unless: lambda { |u| u.password.blank? }
 
   #	---------------------------------------------------------------------------
   def admin?
@@ -39,16 +39,16 @@ class User < ActiveRecord::Base
   end
 
   #	---------------------------------------------------------------------------
-  def can_modify_blogs?(blog_id = nil)
+  def can_modify_blogs?(_blog_id = nil)
     admin?
   end
-  alias can_blog? can_modify_blogs?
-  alias can_moderate_blog_comments? can_modify_blogs?
+  alias_method :can_blog?, :can_modify_blogs?
+  alias_method :can_moderate_blog_comments?, :can_modify_blogs?
 
   #	---------------------------------------------------------------------------
   def blog_comment_auto_approved?(options = {})
     blog_post = options[:blog_post]
-    if(admin? || !blog_post.is_moderated)
+    if admin? || !blog_post.is_moderated
       true
     else
       false

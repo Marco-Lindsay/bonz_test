@@ -1,15 +1,15 @@
 class BlogCategoriesController < ApplicationController
-  before_filter :load_blog_category, :only => [:show, :edit, :destroy, :update]
-	before_filter :can_modify_blogs_or_redirect
+  before_filter :load_blog_category, only: [:show, :edit, :destroy, :update]
+	 before_filter :can_modify_blogs_or_redirect
 
-	# GET /blog_categories
+	 # GET /blog_categories
   # GET /blog_categories.xml
   def index
     @blog_categories = BlogCategory.find(:all)
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @blog_categories }
+      format.xml  { render xml: @blog_categories }
     end
   end
 
@@ -18,7 +18,7 @@ class BlogCategoriesController < ApplicationController
   def show
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @blog_category }
+      format.xml  { render xml: @blog_category }
     end
   end
 
@@ -29,7 +29,7 @@ class BlogCategoriesController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @blog_category }
+      format.xml  { render xml: @blog_category }
     end
   end
 
@@ -46,10 +46,10 @@ class BlogCategoriesController < ApplicationController
       if @blog_category.save
         flash[:notice] = 'BlogCategory was successfully created.'
         format.html { redirect_to(@blog_category) }
-        format.xml  { render :xml => @blog_category, :status => :created, :location => @blog_category }
+        format.xml  { render xml: @blog_category, status: :created, location: @blog_category }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @blog_category.errors, :status => :unprocessable_entity }
+        format.html { render action: 'new' }
+        format.xml  { render xml: @blog_category.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -63,8 +63,8 @@ class BlogCategoriesController < ApplicationController
         format.html { redirect_to(@blog_category) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @blog_category.errors, :status => :unprocessable_entity }
+        format.html { render action: 'edit' }
+        format.xml  { render xml: @blog_category.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -80,9 +80,9 @@ class BlogCategoriesController < ApplicationController
     end
   end
 
-	private
+	 private
 
-	def load_blog_category
-		@blog_category = BlogCategory.find(params[:id])
-	end
+	 def load_blog_category
+ 		 @blog_category = BlogCategory.find(params[:id])
+ 	end
 end

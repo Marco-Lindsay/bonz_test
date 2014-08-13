@@ -8,11 +8,11 @@ module LegacyJavascriptHelper
   end
 
   unless const_defined? :JQCALLBACKS
-    JQCALLBACKS = Set.new([ :beforeSend, :complete, :error, :success ] + (100..599).to_a)
+    JQCALLBACKS = Set.new([:beforeSend, :complete, :error, :success] + (100..599).to_a)
     remove_const(:AJAX_OPTIONS) if const_defined?(:AJAX_OPTIONS)
-    AJAX_OPTIONS = Set.new([ :before, :after, :condition, :url,
-                             :asynchronous, :method, :insertion, :position,
-                             :form, :with, :update, :script ]).merge(JQCALLBACKS)
+    AJAX_OPTIONS = Set.new([:before, :after, :condition, :url,
+                            :asynchronous, :method, :insertion, :position,
+                            :form, :with, :update, :script]).merge(JQCALLBACKS)
   end
 
   # This function can be used to render rjs inline
@@ -35,7 +35,7 @@ module LegacyJavascriptHelper
   end
 
   def jquery_ids(ids)
-    Array(ids).map{|id| jquery_id(id)}.join(',')
+    Array(ids).map { |id| jquery_id(id) }.join(',')
   end
 
   def remote_function(options)
@@ -277,7 +277,7 @@ module LegacyJavascriptHelper
 
     options[:html] ||= {}
     options[:html][:onsubmit] =
-      (options[:html][:onsubmit] ? options[:html][:onsubmit] + "; " : "") +
+      (options[:html][:onsubmit] ? options[:html][:onsubmit] + '; ' : '') +
       "#{remote_function(options)}; return false;"
 
     form_tag(options[:html].delete(:action) || url_for(options[:url]), options[:html], &block)
@@ -329,12 +329,12 @@ module LegacyJavascriptHelper
     when Array
       object = record_or_name_or_array.last
       object_name = options[:as] || ActiveModel::Naming.singular(object)
-      apply_form_for_options!(record_or_name_or_array, options.reverse_merge(:html => {}))
+      apply_form_for_options!(record_or_name_or_array, options.reverse_merge(html: {}))
       args.unshift object
     else
       object      = record_or_name_or_array
       object_name = options[:as] || ActiveModel::Naming.singular(record_or_name_or_array)
-      apply_form_for_options!(object, options.reverse_merge(:html => {}))
+      apply_form_for_options!(object, options.reverse_merge(html: {}))
       args.unshift object
     end
 
@@ -348,7 +348,7 @@ module LegacyJavascriptHelper
   # that +form_remote_tag+ can call in <tt>:complete</tt> to evaluate a multiple
   # update return document using +update_element_function+ calls.
   def evaluate_remote_response
-    "eval(request.responseText)"
+    'eval(request.responseText)'
   end
 
   # Observes the field with the DOM ID specified by +field_id+ and calls a
@@ -481,10 +481,10 @@ module LegacyJavascriptHelper
     js_options = build_callbacks(options)
 
     url_options = options[:url]
-    url_options = url_options.merge(:escape => false) if url_options.is_a?(Hash)
+    url_options = url_options.merge(escape: false) if url_options.is_a?(Hash)
     js_options['url'] = "'#{url_for(url_options)}'"
     js_options['async'] = false if options[:type] == :synchronous
-    js_options['type'] = options[:method] ? method_option_to_s(options[:method]) : ( options[:form] ? "'post'" : nil )
+    js_options['type'] = options[:method] ? method_option_to_s(options[:method]) : ( options[:form] ? "'post'" : nil)
     js_options['dataType'] = options[:datatype] ? "'#{options[:datatype]}'" : (options[:update] ? nil : "'script'")
 
     if options[:form]
@@ -492,7 +492,7 @@ module LegacyJavascriptHelper
     elsif options[:submit]
       js_options['data'] = "#{JQUERY_VAR}(\"##{options[:submit]} :input\").serialize()"
     elsif options[:with]
-      js_options['data'] = options[:with].gsub("Form.serialize(this.form)","#{JQUERY_VAR}.param(#{JQUERY_VAR}(this.form).serializeArray())")
+      js_options['data'] = options[:with].gsub('Form.serialize(this.form)', "#{JQUERY_VAR}.param(#{JQUERY_VAR}(this.form).serializeArray())")
     elsif options[:data]
       js_options['data'] = "'#{ options[:data].to_query }'"
     end
@@ -511,15 +511,15 @@ module LegacyJavascriptHelper
     end
 
     js_options['data'] = "''" if js_options['type'] == "'post'" && js_options['data'].nil?
-    options_for_javascript(js_options.reject {|key, value| value.nil?})
+    options_for_javascript(js_options.reject { |_key, value| value.nil? })
   end
 
-  def build_update_for_success(html_id, insertion=nil)
+  def build_update_for_success(html_id, insertion = nil)
     insertion = build_insertion(insertion)
     "#{JQUERY_VAR}('#{jquery_id(html_id)}').#{insertion}(request);"
   end
 
-  def build_update_for_error(html_id, insertion=nil)
+  def build_update_for_error(html_id, insertion = nil)
     insertion = build_insertion(insertion)
     "#{JQUERY_VAR}('#{jquery_id(html_id)}').#{insertion}(request.responseText);"
   end
@@ -531,7 +531,7 @@ module LegacyJavascriptHelper
     insertion
   end
 
-  def build_observer(klass, name, options = {})
+  def build_observer(_klass, name, options = {})
     if options[:with] && (options[:with] !~ /[\{=(.]/)
       options[:with] = "'#{options[:with]}=' + value"
     else
@@ -541,17 +541,17 @@ module LegacyJavascriptHelper
     callback = options[:function] || remote_function(options)
     javascript  = "#{JQUERY_VAR}('#{jquery_id(name)}').delayedObserver("
     javascript << "#{options[:frequency] || 0}, "
-    javascript << "function(element, value) {"
+    javascript << 'function(element, value) {'
     javascript << "#{callback}}"
-    #javascript << ", '#{options[:on]}'" if options[:on]
-    javascript << ")"
+    # javascript << ", '#{options[:on]}'" if options[:on]
+    javascript << ')'
     javascript_tag(javascript)
   end
 
   def build_callbacks(options)
     callbacks = {}
-    options[:beforeSend] = '';
-    [:uninitialized,:loading].each do |key|
+    options[:beforeSend] = ''
+    [:uninitialized, :loading].each do |key|
       options[:beforeSend] << (options[key].last == ';' ? options.delete(key) : options.delete(key) << ';') if options[key]
     end
     options.delete(:beforeSend) if options[:beforeSend].blank?
@@ -581,7 +581,6 @@ module LegacyJavascriptHelper
   def method_option_to_s(method)
     (method.is_a?(String) and !method.index("'").nil?) ? method : "'#{method}'"
   end
-
 end
 
 ActionController::Base.helper LegacyJavascriptHelper

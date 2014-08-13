@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :login_required, :only => [:edit, :update, :destroy]
+  before_filter :login_required, only: [:edit, :update, :destroy]
 
   def new
     @user = User.new
@@ -9,15 +9,15 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     if @user.save
       if params[:avatar]
-    		avatar = UserProfileImage.new(params[:avatar])
-    		avatar.user_id = @user.id
-    		avatar.save!
+    		  avatar = UserProfileImage.new(params[:avatar])
+    		  avatar.user_id = @user.id
+    		  avatar.save!
       end
       set_current_user(@user)
       flash[:notice] = 'You have been registered!'
       redirect_to root_url
     else
-      render :action => :new
+      render action: :new
     end
   end
 
@@ -31,15 +31,15 @@ class UsersController < ApplicationController
       if @user.avatar.present?
         @user.avatar.update_attributes(params[:avatar])
       else
-    		avatar = UserProfileImage.new(params[:avatar])
-    		avatar.user_id = @user.id
-    		avatar.save!
+    		  avatar = UserProfileImage.new(params[:avatar])
+    		  avatar.user_id = @user.id
+    		  avatar.save!
       end
 
       flash[:notice] = 'You account has been updated!'
       redirect_to root_url
     else
-      render :action => :edit
+      render action: :edit
     end
   end
 
