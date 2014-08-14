@@ -10,4 +10,9 @@ class SessionsController < ApplicationController
       render action: :new
     end
   end
+
+  def destroy
+    session[:user_id] = nil
+    redirect_to root_url
+  end
 end

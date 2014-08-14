@@ -2,7 +2,6 @@ require 'test_helper'
 
 class BlogPostsControllerTest < ActionController::TestCase
 	 def setup
-    # @routes = ActionController::Routing::Routes
     @routes = BonzTest::Application.routes
    end
 
