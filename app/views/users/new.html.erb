@@ -7,7 +7,7 @@
   <p>First Name: &nbsp;<%= f.text_field :first_name, :style => "font-size:20px" %></p>
   <p>Last Name: &nbsp;<%= f.text_field :last_name, :style => "font-size:20px" %></p>
 
-  <% if current_user.admin? %>
+  <% if current_user && current_user.admin? %>
     <p>Role: &nbsp;<%= f.select :role, options_for_select([[ 'Commenter', 0 ], [ 'Admin', 1 ]]), :style => "font-size:20px" %></p>
   <% end %>
 
