@@ -1,4 +1,4 @@
-# bonz-test
+# The Challenge
 
 This code is based off of a blog plugin we use at Bonanza. It's old, outdated, and needs to be updated.
 
@@ -12,23 +12,20 @@ Think of your output here as a finished product that would be getting merged bac
 
 We're not expecting a complete rewrite here. What can you do to make this blog app better in a few hours?
 
-## Instructions
 
-1. Download the source code zip file (see the "Download ZIP" button on the right-hand side)
-2. Upload the source to a new repo
-3. Make your changes
-4. When your changes are complete, edit this README to include:
-   * A brief overview of the changes you made
-   * A TODO of features/improvements/fixes you might have added if you had more time
-5. Email jason@bonanza.com with a link to the repo when you're done
+#My Approach
 
-## Requirements
 
-* Rails 3.2.18
-* ruby ruby-2.0.0-p247
-* Mysql
-
-## Setup
-
-1. Load the database schema with `rake db:schema:load`
-2. Load the seed data with `rake db:seed`
+	- To fix as many issues that conflicted with the ruby style guide as I could in a short period of time, I used the robocop to help me find the majority of them and there are still more.
+	- My next step was to update the testing suite from what seemed to be old rails 2 code to valid rails 3 code, I fixed all the errors with the tests however there are still a couple of tests that are not passing. 
+	- Finally I familiarized with the code base as much as I could in a short period of time and started fixing the bugs that were preventing me from using basic functionality of the site. Bugs such as:
+		- Fixing the registration/new user page.
+		- Fixing the .admin? method so that it only returned true when the current users role was admin or super_admin.
+		- Adding a method for users to logout so that I could manually test how the site function for users with different roles and fix bugs accordingly.
+Given more time there is a lot that I would do. There are a lot of bugs and without talking with someone who is going to be using this it is hard to prioritize what features are the most important and critical. If possible the first thing that I would do is talk to someone more familiar with the product , or the customer, and determine exactly what it is they need. I would then:
+	- Fix the tests that are not passing, or fix the code to make the tests pass whatever was appropriate for the situation.
+	- After taking with the “customer” of the product I would create small manageable user stories.
+	- Write tests to cover as much of the current functionality as was appropriate.
+	- Prioritize the user stories and determine a minimum viable product.
+	- Based off of the user stories I would then write tests.
+	- Implement code to make the tests pass while writing them as much as was possible.
